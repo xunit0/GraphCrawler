@@ -10,7 +10,7 @@
 
 
 const std::string BASE = "http://hollywood-graph-crawler.bridgesuncc.org/neighbors/";
-std::que
+
 
 
 size_t write_callback(void* ptr, size_t size, size_t nmemb, void* userdata) {
