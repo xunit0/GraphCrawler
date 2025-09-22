@@ -41,7 +41,7 @@ std::vector<std::string> getNeighbors(CURL* curl, const std::string& nodeName) {
         return neighbors; // return empty
     }
 
-    // Parse JSON using RapidJSON
+    // JSON parsing
     rapidjson::Document doc;
     doc.Parse(body.c_str());
 
@@ -59,22 +59,18 @@ void bfs(const std::string& startNode, int maxDepth) {
     CURL* curl = curl_easy_init();
 
 
-    // Track visited nodes so we don't loop forever
     std::unordered_set<std::string> visited;
-    std::queue<std::pair<std::string, int>> q; // pair of node and depth
+    std::queue<std::string> q; // pair of node and depth
 
-    q.push({startNode, 0});
+    q.push(startNode);
     visited.insert(startNode);
 
     auto t0 = std::chrono::steady_clock::now();
 
-    while (!q.empty()) {
-        auto [node, depth] = q.front();
+    for (int i = 0; i < maxDepth; i++) {
+
+        auto node = q.front();
         q.pop();
-
-        std::cout << node << " (depth " << depth << ")\n";
-
-        if (depth == maxDepth) continue;
 
         // Fetch neighbors and enqueue unseen ones
         std::vector<std::string> neighbors = getNeighbors(curl, node);
