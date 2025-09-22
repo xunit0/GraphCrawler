@@ -70,11 +70,10 @@ void bfs(const std::string& startNode, int maxDepth) {
 
     for (int i = 0; i < maxDepth; i++) {
 
-        auto node = q.front();
-        q.pop();
+
 
         // Fetch neighbors and enqueue unseen ones
-        std::vector<std::string> neighbors = getNeighbors(curl, node);
+        std::vector<std::string> neighbors = getNeighbors(curl, startNode);
         for (auto& nb : neighbors) {
             if (visited.find(nb) == visited.end()) {
                 visited.insert(nb);
@@ -85,7 +84,13 @@ void bfs(const std::string& startNode, int maxDepth) {
 
     auto t1 = std::chrono::steady_clock::now();
     auto ms = std::chrono::duration_cast<std::chrono::milliseconds>(t1 - t0).count();
-    std::cerr << "Visited " << visited.size() << " nodes in " << ms << " ms\n";
+    std::cout << "Visited " << visited.size() << " nodes in " << ms << " ms\n";
+
+    for (int i = 0 ; i<q.size(); i++) {
+        std::string s = q.front();
+        q.pop();
+        std::cout << s << "\n";
+    }
 
     curl_easy_cleanup(curl);
 }
