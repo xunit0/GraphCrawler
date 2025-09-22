@@ -42,7 +42,7 @@ std::vector<std::string> getNeighbors(CURL* curl, const std::string& nodeName) {
         return neighbors; // return empty
     }
 
-    // JSON parsing
+    //Here's where I would parse the json
     rapidjson::Document doc;
     doc.Parse(body.c_str());
 
@@ -50,7 +50,7 @@ std::vector<std::string> getNeighbors(CURL* curl, const std::string& nodeName) {
         for (auto& v : doc["neighbors"].GetArray()) {
             neighbors.push_back(v.GetString());
         }
-    }
+    }else std::cout << "neighbors not found\n";
 
     return neighbors;
 }
@@ -70,10 +70,11 @@ void bfs(const std::string& startNode, int maxDepth) {
 
     for (int i = 0; i < maxDepth; i++) {
 
-
+        std::string curNode = q.front();
+        q.pop();
 
         // Fetch neighbors and enqueue unseen ones
-        std::vector<std::string> neighbors = getNeighbors(curl, startNode);
+        std::vector<std::string> neighbors = getNeighbors(curl, curNode);
         for (auto& nb : neighbors) {
             if (visited.find(nb) == visited.end()) {
                 visited.insert(nb);
