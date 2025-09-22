@@ -37,14 +37,20 @@ std::vector<std::string> getNeighbors(CURL* curl, const std::string& nodeName) {
 
     // Run the request
     CURLcode res = curl_easy_perform(curl);
-    if (res != CURLE_OK) {
-        std::cerr << "Curl failed: " << curl_easy_strerror(res) << "\n";
-        return neighbors; // return empty
-    }
+
 
     //Here's where I would parse the json
     rapidjson::Document doc;
     doc.Parse(body.c_str());
+
+    if ( doc.HasParseError() || !doc.IsObject() ) {
+        return neighbors;
+    }
+
+    if (doc.HasMember("error") && doc["error"].IsString()) {
+        std::cout << doc["error"].GetString() << std::endl;
+        return neighbors;
+    }
 
     if (doc.HasMember("neighbors") && doc["neighbors"].IsArray()) {
         for (auto& v : doc["neighbors"].GetArray()) {
@@ -69,9 +75,12 @@ void bfs(const std::string& startNode, int maxDepth) {
     auto t0 = std::chrono::steady_clock::now();
 
     for (int i = 0; i < maxDepth; i++) {
+        std::string curNode;
 
-        std::string curNode = q.front();
-        q.pop();
+        if (!q.empty()) {
+            curNode = q.front();
+            q.pop();
+        }
 
         // Fetch neighbors and enqueue unseen ones
         std::vector<std::string> neighbors = getNeighbors(curl, curNode);
@@ -87,10 +96,8 @@ void bfs(const std::string& startNode, int maxDepth) {
     auto ms = std::chrono::duration_cast<std::chrono::milliseconds>(t1 - t0).count();
     std::cout << "Visited " << visited.size() << " nodes in " << ms << " ms\n";
 
-    for (int i = 0 ; i<q.size(); i++) {
-        std::string s = q.front();
-        q.pop();
-        std::cout << s << "\n";
+    for (auto& node : visited) {
+        std::cout << node << std::endl;
     }
 
     curl_easy_cleanup(curl);
