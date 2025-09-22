@@ -77,7 +77,7 @@ void bfs(const std::string& startNode, int maxDepth) {
         for (auto& nb : neighbors) {
             if (visited.find(nb) == visited.end()) {
                 visited.insert(nb);
-                q.push({nb, depth + 1});
+                q.push(nb);
             }
         }
     }
