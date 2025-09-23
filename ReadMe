@@ -1,0 +1,12 @@
+# BFS Graph Traversal (C++)
+
+This program performs a breadth-first search (BFS) over the Bridges
+Actor/Movie dataset via a REST API. It uses **libcurl** for HTTP requests
+and **RapidJSON** for parsing.
+
+**************************DEPENDENCIES NEEDED********************************
+*libcurl
+*rapidjson
+
+```bash
+make
