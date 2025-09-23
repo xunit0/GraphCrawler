@@ -1,0 +1,21 @@
+# Makefile for BFS Graph Traversal
+
+CXX = g++
+CXXFLAGS = -O2 -std=c++17 -Wall
+
+TARGET = bfs
+SRC = bfs.cpp
+
+.PHONY: all clean run
+
+all: $(TARGET)
+
+$(TARGET): $(SRC)
+	$(CXX) $(CXXFLAGS) $(SRC) -o $(TARGET) -lcurl
+
+run: $(TARGET)
+	# Example run: start node "Tom Hanks" with depth 2
+	./$(TARGET) "Tom Hanks" 2
+
+clean:
+	rm -f $(TARGET) *.o
