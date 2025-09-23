@@ -4,7 +4,7 @@ CXX = g++
 CXXFLAGS = -O2 -std=c++17 -Wall
 
 TARGET = bfs
-SRC = bfs.cpp
+SRC = main.cpp
 
 .PHONY: all clean run
 
@@ -15,7 +15,7 @@ $(TARGET): $(SRC)
 
 run: $(TARGET)
 	# Example run: start node "Tom Hanks" with depth 2
-	./$(TARGET) "Tom Hanks" 2
+	./$(TARGET) "Tom_Hanks" 2
 
 clean:
 	rm -f $(TARGET) *.o
